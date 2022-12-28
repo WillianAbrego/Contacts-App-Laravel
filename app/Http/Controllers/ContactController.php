@@ -15,7 +15,9 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index', ['contacts' => Contact::all()]);
+        //$contacts = Contact::where('user_id', auth()->id())->get();
+        $contacts = auth()->user()->contacts;
+        return view('contacts.index', compact('contacts'));
     }
 
     /**
@@ -44,7 +46,11 @@ class ContactController extends Controller
 
         ]);
 
-        Contact::create($data);
+        // $data['user_id'] = auth()->id();
+
+        // Contact::create($data);
+        //Contact::create($data, [...$data, 'user_id' => auth()->id()]);
+        auth()->user()->contacts()->create($data);
         return redirect()->route('home');
     }
 
