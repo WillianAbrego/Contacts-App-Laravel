@@ -12,7 +12,18 @@
           <p class="me-2 mb-0">{{ $contact->name }}</p>
           <p class="me-2 mb-0 d-none d-md-block"><a href="mailto:{{ $contact->email }}">{{ $contact->email }}</a></p>
           <p class="me-2 mb-0 d-none d-md-block"><a
-              href="tel:{{ $contact->phone_number }}">{{ $contact->phone_number }}</a></p>
+              href="tel:{{ $contact->phone_number }}">{{ $contact->phone_number }}</a>
+          </p>
+          <a class="btn btn-secondary mb-0 me-1 p-1 px2" href="{{ route('contacts.edit', $contact->id) }}">
+            <x-icon icon="pencil" />
+          </a>
+          <form action="{{ route('contacts.destroy', $contact->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger mb-0 p-1 px-2">
+              <x-icon icon="trash" />
+            </button>
+          </form>
         </div>
       </div>
     @empty
