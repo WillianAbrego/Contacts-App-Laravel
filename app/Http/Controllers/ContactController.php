@@ -39,12 +39,16 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-
+        $data = $request->validated();
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $data['profile_picture'] = $path;
+        }
         // $data['user_id'] = auth()->id();
 
         // Contact::create($data);
         //Contact::create($data, [...$data, 'user_id' => auth()->id()]);
-        $contact = auth()->user()->contacts()->create($request->validated());
+        $contact = auth()->user()->contacts()->create($data);
 
         // session()->flash('alert', [
         //     'message' => "Contact $contact->name successfully saved",
@@ -92,7 +96,13 @@ class ContactController extends Controller
     {
         $this->authorize('update', $contact);
 
-        $contact->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $data['profile_picture'] = $path;
+        }
+        $contact->update($data);
 
         return redirect('home')->with('alert', [
             'message' => "Contact $contact->name successfully updated",

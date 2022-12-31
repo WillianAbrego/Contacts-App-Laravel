@@ -8,7 +8,7 @@
           <div class="card-header">Create New Contact</div>
 
           <div class="card-body">
-            <form method="POST" action="{{ route('contacts.store') }}">
+            <form method="POST" action="{{ route('contacts.store') }}" enctype="multipart/form-data">
               @csrf
               <div class="row mb-3">
                 <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
@@ -56,6 +56,20 @@
                   <input id="age" type="tel" class="form-control @error('age') is-invalid @enderror"
                     name="age" value="{{ old('age') }}" autocomplete="age">
                   @error('age')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="age" class="col-md-4 col-form-label text-md-end">Profile Picture</label>
+
+                <div class="col-md-6">
+                  <input id="profile_picture" type="file" class="form-control @error('email') is-invalid @enderror"
+                    name="profile_picture">
+                  @error('profile_picture')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                     </span>
