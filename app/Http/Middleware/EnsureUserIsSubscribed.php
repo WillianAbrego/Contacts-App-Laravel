@@ -17,8 +17,8 @@ class EnsureUserIsSubscribed
     public function handle(Request $request, Closure $next)
     {
         if (
-            auth()->user()
-            ?->onTrial() &&
+            !auth()->user()
+                ?->onTrial() &&
             !auth()->user()
                 ?->subscribed()
         ) {
