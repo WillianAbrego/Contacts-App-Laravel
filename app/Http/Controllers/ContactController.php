@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 
 class ContactController extends Controller
@@ -54,6 +55,7 @@ class ContactController extends Controller
         //Contact::create($data, [...$data, 'user_id' => auth()->id()]);
         $contact = auth()->user()->contacts()->create($data);
 
+        Cache::forget(auth()->id());
         // session()->flash('alert', [
         //     'message' => "Contact $contact->name successfully saved",
         //     'type' => 'success',
@@ -107,7 +109,7 @@ class ContactController extends Controller
             $data['profile_picture'] = $path;
         }
         $contact->update($data);
-
+        Cache::forget(auth()->id());
         return redirect('home')->with('alert', [
             'message' => "Contact $contact->name successfully updated",
             'type' => 'success',
@@ -124,6 +126,7 @@ class ContactController extends Controller
     {
         $this->authorize('delete', $contact);
         $contact->delete();
+        Cache::forget(auth()->id());
         return back()->with('alert', [
             'message' => "Contact $contact->name successfully deleted",
             'type' => 'success',
